@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 71">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #9b8ccc;
+      }
+
+      .cls-1, .cls-2, .cls-4 {
+        stroke: #413d4a;
+      }
+
+      .cls-1, .cls-4 {
+        stroke-width: 2px;
+      }
+
+      .cls-2, .cls-6 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke-linecap: round;
+        stroke-width: 2.5px;
+      }
+
+      .cls-3 {
+        fill: #ffe781;
+      }
+
+      .cls-4 {
+        fill: #94e7ef;
+      }
+
+      .cls-5 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Icon" transform="translate(-77.601 -4)">
+    <path id="Path_151" data-name="Path 151" class="cls-1" d="M115.6,60.746H83.1a5.056,5.056,0,0,0-5,5.082v54.628a5.056,5.056,0,0,0,5,5.082h40a5.056,5.056,0,0,0,5-5.082V65.828a5.056,5.056,0,0,0-5-5.082Z" transform="translate(0.5 -51.537)"/>
+    <g id="Group_45" data-name="Group 45" transform="translate(86.737 23.803)">
+      <line id="Line_48" data-name="Line 48" class="cls-2" x2="34.545" transform="translate(0 15.658)"/>
+      <line id="Line_49" data-name="Line 49" class="cls-2" x2="34.545" transform="translate(0 23.026)"/>
+      <line id="Line_50" data-name="Line 50" class="cls-2" x2="20.909" transform="translate(0 32.237)"/>
+      <line id="Line_51" data-name="Line 51" class="cls-2" x2="17.273" transform="translate(14.545 0)"/>
+      <line id="Line_52" data-name="Line 52" class="cls-2" x2="17.273" transform="translate(14.545 7.368)"/>
+    </g>
+    <rect id="Rectangle_77" data-name="Rectangle 77" class="cls-3" width="10.909" height="14.737" transform="translate(85.374 20.579)"/>
+    <g id="Rectangle_90" data-name="Rectangle 90" class="cls-4" transform="translate(89.101 4)">
+      <rect class="cls-5" width="28.182" height="11.053" rx="2"/>
+      <rect class="cls-6" x="1" y="1" width="26.182" height="9.053" rx="1"/>
+    </g>
+  </g>
+</svg>

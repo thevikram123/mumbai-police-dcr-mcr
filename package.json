@@ -1,0 +1,11 @@
+{
+  "name": "mumbai-police-dcr-mcr-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.mjs",
+    "check": "node --check src/app.js && node --check src/components/header.js && node --check src/components/formFields.js && node --check src/views/home.js && node --check src/views/reportForm.js && node --check src/views/dashboard.js"
+  }
+}
+
