@@ -4,12 +4,21 @@ A dependency-free, GitHub Pages-ready web application for daily and monthly cumu
 
 ## Features
 
-- DCR and MCR intake forms with auto-filled jurisdiction fields
-- FIR total validation and local draft persistence
-- Daily and monthly dashboards using synthetic data
-- Station selection, text-size controls, and high-contrast mode
+- Role-based sign in: per-police-station consoles and a master admin (HQ) console
+- Step-by-step DCR/MCR filing wizard: Jurisdiction → Report Figures → Review & Submit, with live FIR tally validation, draft persistence, and a submission receipt with reference number
+- Submissions persist locally and flow into the dashboards; the admin view shows per-station submitted/awaiting status
+- Interactive SVG dashboards: hover tooltips, animated bars and donuts, sortable tables, role-scoped data (station sees its own figures, admin sees all stations)
+- Submission register with full audit trail of filed reports
+- Formatted PDF downloads: individual DCR/MCR reports (letterhead, jurisdiction and figures tables, signature block) and full dashboard exports, from the receipt screen, the register, and both dashboards
+- "Ask the Assistant" page: plain-language Q&A over the portal dataset, powered by Gemini through a Cloudflare Worker (see `worker/README.md` for the 5-minute setup; the API key stays in the Worker)
+- Text-size controls and high-contrast mode
 - Hash routing that works reliably on GitHub Pages
 - Official public Mumbai Police logo and service icons used as visual references
+
+## Demo credentials
+
+- **Station login:** choose any police station, password `station@123`
+- **Admin login:** username `admin`, password `admin@123`
 
 ## Run locally
 

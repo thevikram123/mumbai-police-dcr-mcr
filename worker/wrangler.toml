@@ -1,0 +1,14 @@
+name = "mp-dcr-mcr-assistant"
+main = "gemini-proxy.js"
+compatibility_date = "2026-01-01"
+
+[vars]
+# Model served by the assistant. "gemini-flash-lite-latest" always points to the
+# newest Flash-Lite release; pin an explicit version (e.g. "gemini-3.1-flash-lite")
+# if you prefer.
+MODEL = "gemini-flash-lite-latest"
+# Lock CORS to your GitHub Pages origin once deployed (recommended):
+# ALLOWED_ORIGIN = "https://thevikram123.github.io"
+
+# Secret (set via CLI, never committed):
+#   npx wrangler secret put GEMINI_API_KEY
