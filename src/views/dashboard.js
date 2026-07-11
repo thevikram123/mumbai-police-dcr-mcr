@@ -15,7 +15,7 @@ function scopeRows(type) {
   return merged.filter(s => s.name === own?.name);
 }
 
-function dashboardData(mode) {
+export function dashboardData(mode) {
   const monthly = mode === "monthly";
   const rows = scopeRows(monthly ? "MCR" : "DCR");
   const scopeLabel = isAdmin() ? "All police stations" : `Police Station: ${rows[0]?.name || ""}`;

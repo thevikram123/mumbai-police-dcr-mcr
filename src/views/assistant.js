@@ -1,6 +1,7 @@
 import { getSession, isAdmin, sessionStation } from "../auth.js";
-import { hierarchy, stations, dailyTrend } from "../data/reportData.js";
-import { getSubmissions, submissionsFor, mergedStationFigures } from "../data/store.js";
+import { hierarchy, dailyTrend } from "../data/reportData.js";
+import { getSubmissions, submissionsFor } from "../data/store.js";
+import { dashboardData } from "./dashboard.js";
 import { ASSISTANT_WORKER_URL } from "../config.js";
 
 const history = [];
@@ -18,14 +19,26 @@ const SUGGESTIONS = [
 function contextData() {
   const admin = isAdmin();
   const station = sessionStation();
+  // dashboardData() is the exact function that renders the dashboards, so the
+  // assistant answers from the same role-scoped rows and totals the user sees.
+  const daily = dashboardData("daily");
+  const monthly = dashboardData("monthly");
   return JSON.stringify({
     today: new Date().toISOString().slice(0, 10),
     viewer: admin ? { role: "HQ administrator", scope: "all police stations" } : { role: "station officer", station: station?.name },
     hierarchy,
-    dailyFigures: mergedStationFigures("DCR", stations).map(({ name, zone, division, total, body, other, submitted }) => ({ station: name, zone, division, totalFir: total, bodyOffences: body, otherOffences: other, dcrSubmitted: Boolean(submitted) })),
-    monthlyFigures: mergedStationFigures("MCR", stations).map(({ name, total, currentCs, lastCs, currentPending, lastPending, submitted }) => ({ station: name, totalFir: total, chargesheetsThisMonth: currentCs, chargesheetsAgainstLastMonth: lastCs, pendingThisMonth: currentPending, pendingLastMonth: lastPending, mcrSubmitted: Boolean(submitted) })),
+    dailyDashboard: {
+      scope: daily.scopeLabel,
+      totals: { totalFir: daily.totals.total, bodyOffences: daily.totals.body, otherOffences: daily.totals.other },
+      stations: daily.rows.map(({ name, zone, division, total, body, other, submitted, period }) => ({ station: name, zone, division, totalFir: total, bodyOffences: body, otherOffences: other, dcrSubmitted: Boolean(submitted), reportDate: submitted ? period : undefined }))
+    },
+    monthlyDashboard: {
+      scope: monthly.scopeLabel,
+      totals: { totalFir: monthly.totals.total, chargesheetsThisMonth: monthly.totals.currentCs, chargesheetsAgainstLastMonth: monthly.totals.lastCs, pendingThisMonth: monthly.totals.currentPending, pendingLastMonth: monthly.totals.lastPending },
+      stations: monthly.rows.map(({ name, total, currentCs, lastCs, currentPending, lastPending, submitted, period }) => ({ station: name, totalFir: total, chargesheetsThisMonth: currentCs, chargesheetsAgainstLastMonth: lastCs, pendingThisMonth: currentPending, pendingLastMonth: lastPending, mcrSubmitted: Boolean(submitted), reportMonth: submitted ? period : undefined }))
+    },
     cityWideDailyTrend: dailyTrend,
-    filedReports: (isAdmin() ? getSubmissions() : submissionsFor(station?.name)).slice(0, 50)
+    filedReports: (admin ? getSubmissions() : submissionsFor(station?.name)).slice(0, 50)
   });
 }
 
