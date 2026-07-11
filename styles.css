@@ -157,8 +157,6 @@ tfoot td { background: #f0f1f8; font-weight: 800; }
 .login-form select:focus { border-color: var(--police); box-shadow: 0 0 0 3px rgba(94, 106, 176, 0.16); outline: 0; }
 .login-form .validation-message { margin: 0; min-height: 20px; }
 .login-button { width: 100%; }
-.login-hint { display: grid; gap: 4px; margin-top: 24px; padding: 14px 16px; border: 1px dashed var(--border); border-radius: 3px; background: #fafafb; font-size: 14px; }
-.login-hint code { padding: 1px 6px; border-radius: 3px; background: #ececf2; font-family: Consolas, monospace; }
 
 /* ---------- Wizard ---------- */
 .wizard-stepper { display: flex; justify-content: center; gap: 0; margin: 0 0 28px; padding: 0; list-style: none; }

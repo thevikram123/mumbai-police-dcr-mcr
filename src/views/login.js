@@ -1,5 +1,5 @@
 import { stations } from "../data/reportData.js";
-import { loginStation, loginAdmin, STATION_PASSWORD, ADMIN_PASSWORD } from "../auth.js";
+import { loginStation, loginAdmin } from "../auth.js";
 
 export function loginView() {
   const mode = sessionStorage.getItem("mp-login-mode") || "station";
@@ -27,11 +27,6 @@ export function loginView() {
         <p class="validation-message error" role="alert"></p>
         <button class="primary-button login-button" type="submit">${mode === "station" ? "Sign in to Station Console" : "Sign in to HQ Console"}</button>
       </form>
-      <div class="login-hint">
-        <strong>Demonstration credentials</strong>
-        <span>Station: choose any station, password <code>${STATION_PASSWORD}</code></span>
-        <span>Admin: username <code>admin</code>, password <code>${ADMIN_PASSWORD}</code></span>
-      </div>
     </section>
     <p class="data-note">Station officers can file DCR/MCR for their own station. The admin console provides a read-only view across all police stations.</p>
   </main>`;
