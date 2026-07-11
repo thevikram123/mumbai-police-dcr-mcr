@@ -6,7 +6,7 @@ import { ASSISTANT_WORKER_URL } from "../config.js";
 const history = [];
 const esc = value => String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-const workerUrl = () => (localStorage.getItem("mp-assistant-url") || ASSISTANT_WORKER_URL || "").trim();
+const workerUrl = () => ASSISTANT_WORKER_URL.trim().replace(/\/+$/, "");
 
 const SUGGESTIONS = [
   "Which station filed the most FIRs?",
@@ -35,12 +35,8 @@ export function assistantView() {
   return `<main id="app-content" class="page-content page-width assistant-view">
     <div class="title-block"><h1>Reporting Assistant</h1><p>Ask questions about ${session?.role === "admin" ? "city-wide" : `${session?.station}'s`} DCR/MCR figures — answered by AI from portal data</p><i></i></div>
     ${configured ? "" : `<section class="form-panel setup-panel">
-      <div class="panel-heading"><h2>Assistant not configured yet</h2><span>One-time setup</span></div>
-      <p>Deploy the Cloudflare Worker in the <code>worker/</code> folder of this repository (it holds the Gemini API key), then paste its URL below. The URL is saved only in this browser.</p>
-      <form class="worker-url-form" data-worker-url-form>
-        <label class="form-field"><span>Cloudflare Worker URL</span><input name="url" type="url" placeholder="https://mp-dcr-mcr-assistant.your-subdomain.workers.dev" required></label>
-        <button class="primary-button" type="submit">Save &amp; Enable Assistant</button>
-      </form>
+      <div class="panel-heading"><h2>Assistant temporarily unavailable</h2><span>Service provisioning</span></div>
+      <p>The assistant service is being provisioned. Please check back shortly.</p>
     </section>`}
     <section class="form-panel chat-panel ${configured ? "" : "disabled"}">
       <div class="chat-log" data-chat-log aria-live="polite">
@@ -63,13 +59,6 @@ function chatBubble(role, text) {
 export function bindAssistant() {
   const form = document.querySelector("[data-chat-form]");
   if (!form) return;
-
-  document.querySelector("[data-worker-url-form]")?.addEventListener("submit", event => {
-    event.preventDefault();
-    const url = new FormData(event.target).get("url").trim().replace(/\/+$/, "");
-    localStorage.setItem("mp-assistant-url", url);
-    window.dispatchEvent(new CustomEvent("rerender"));
-  });
 
   const log = document.querySelector("[data-chat-log]");
   const input = form.querySelector("input[name=question]");

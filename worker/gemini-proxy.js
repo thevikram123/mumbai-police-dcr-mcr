@@ -3,7 +3,7 @@
 //
 // Env vars:
 //   GEMINI_API_KEY (secret, required)  — wrangler secret put GEMINI_API_KEY
-//   MODEL          (optional)          — defaults to gemini-flash-lite-latest
+//   MODEL          (optional)          — defaults to gemini-3.1-flash-lite
 //   ALLOWED_ORIGIN (optional)          — e.g. https://thevikram123.github.io (defaults to *)
 
 const SYSTEM_PROMPT = `You are the reporting assistant inside the Mumbai Police DCR/MCR demonstration portal.
@@ -32,7 +32,7 @@ export default {
       return json({ error: "Provide a question (max 2000 chars)." }, 400, cors);
     }
 
-    const model = env.MODEL || "gemini-flash-lite-latest";
+    const model = env.MODEL || "gemini-3.1-flash-lite";
     const contents = [
       ...history.slice(-10).map(m => ({
         role: m.role === "assistant" ? "model" : "user",
