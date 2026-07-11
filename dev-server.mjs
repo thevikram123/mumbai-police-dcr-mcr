@@ -3,6 +3,7 @@ import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 
 const root = process.cwd();
+const port = Number(process.env.PORT) || 4173;
 const types = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg" };
 
 createServer(async (req, res) => {
@@ -17,5 +18,4 @@ createServer(async (req, res) => {
     res.writeHead(404, { "Content-Type": "text/plain" });
     res.end("Not found");
   }
-}).listen(4173, "127.0.0.1", () => console.log("Mumbai Police reporting app: http://127.0.0.1:4173"));
-
+}).listen(port, "127.0.0.1", () => console.log(`Mumbai Police reporting app: http://127.0.0.1:${port}`));
