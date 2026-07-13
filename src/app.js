@@ -4,7 +4,7 @@ import { loginView, bindLogin } from "./views/login.js";
 import { reportFormView, bindReportForm } from "./views/reportForm.js";
 import { dashboardView, bindDashboard } from "./views/dashboard.js";
 import { submissionsView, bindSubmissions } from "./views/submissions.js";
-import { stateOverviewView } from "./views/stateOverview.js";
+import { stateOverviewView, bindStateOverview } from "./views/stateOverview.js";
 import { assistantView, bindAssistant } from "./views/assistant.js";
 import { getSession } from "./auth.js";
 
@@ -44,6 +44,7 @@ function render() {
   bindReportForm();
   bindDashboard();
   bindSubmissions();
+  bindStateOverview();
   bindAssistant();
   window.scrollTo(0, 0);
 }

@@ -1,5 +1,6 @@
 import { stateUnits, offenceTypes, applicationsPendingAction, applicationsPendingVisit, stateTotals } from "../data/stateData.js";
 import { donutChart } from "../components/charts.js";
+import { downloadStateOverviewPdf } from "../components/pdf.js";
 
 const OFFENCE_COLORS = ["#5e6ab0", "#8892cf", "#c9cdea", "#f4d56f", "#e8a87c", "#a3c9a8", "#b98ec9"];
 
@@ -8,7 +9,9 @@ export function stateOverviewView() {
   const maxFir = topUnits[0].fir;
   const busiest = topUnits[0];
   return `<main id="app-content" class="page-content page-width dashboard-view">
-    <div class="title-block"><h1>Maharashtra State Overview</h1><p>Unit-wise FIR registration, offence composition, and application pendency</p><i></i></div>
+    <div class="title-block"><h1>Maharashtra State Overview</h1><p>Unit-wise FIR registration, offence composition, and application pendency</p><i></i>
+      <div class="dashboard-actions"><button class="outline-button" type="button" data-export-state>Download PDF Report</button><span class="pdf-inline-status" data-pdf-status role="status"></span></div>
+    </div>
     <section class="summary-grid">
       <article class="summary-card"><img src="assets/report.svg" alt=""><div><span>Reporting Units</span><strong>${stateTotals.units}</strong></div></article>
       <article class="summary-card"><img src="assets/dcp.png" alt=""><div><span>FIRs Filed (State)</span><strong>${stateTotals.totalFir}</strong></div></article>
@@ -52,4 +55,20 @@ export function stateOverviewView() {
   </main>`;
 }
 
-// Uses the .dashboard-view class, so bindDashboard() wires its tooltips and sortable table.
+// Tooltips and table sorting come from bindDashboard() via the .dashboard-view class.
+export function bindStateOverview() {
+  const button = document.querySelector("[data-export-state]");
+  if (!button) return;
+  button.addEventListener("click", async () => {
+    const status = document.querySelector("[data-pdf-status]");
+    button.disabled = true;
+    status.textContent = "Preparing PDF…";
+    try {
+      await downloadStateOverviewPdf({ stateUnits, offenceTypes, applicationsPendingAction, applicationsPendingVisit, stateTotals });
+      status.textContent = "PDF downloaded.";
+    } catch (error) {
+      status.textContent = error.message;
+    }
+    button.disabled = false;
+  });
+}

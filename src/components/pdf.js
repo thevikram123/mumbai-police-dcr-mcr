@@ -165,3 +165,58 @@ export async function downloadDashboardPdf({ mode, scopeLabel, rows, totals }) {
   documentFooter(doc);
   doc.save(`${monthly ? "MCR" : "DCR"}-dashboard-${new Date().toISOString().slice(0, 10)}.pdf`);
 }
+
+export async function downloadStateOverviewPdf({ stateUnits, offenceTypes, applicationsPendingAction, applicationsPendingVisit, stateTotals }) {
+  const { jsPDF } = await loadJsPdf();
+  const doc = new jsPDF();
+  let y = await documentHeader(doc, "Maharashtra State Overview");
+
+  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(...INK);
+  doc.text(`Reporting Units: ${stateTotals.units}`, 14, y);
+  doc.text(`FIRs Filed (State): ${stateTotals.totalFir}`, 80, y);
+  doc.text(`Generated: ${new Date().toLocaleString("en-IN")}`, 140, y);
+  y += 8;
+
+  const sortedUnits = [...stateUnits].sort((a, b) => b.fir - a.fir);
+  doc.autoTable({
+    ...tableTheme, startY: y,
+    head: [["Unit-wise FIR Registration", "FIRs Filed"]],
+    body: sortedUnits.map(u => [u.unit, String(u.fir)]),
+    foot: [["TOTAL", String(stateTotals.totalFir)]],
+    footStyles: { fillColor: [240, 241, 248], textColor: INK, fontStyle: "bold" },
+    columnStyles: { 1: { halign: "right", cellWidth: 40 } }
+  });
+  y = doc.lastAutoTable.finalY + 8;
+
+  doc.autoTable({
+    ...tableTheme, startY: y,
+    head: [["Type of Offence", "No. of Offences"]],
+    body: offenceTypes.map(o => [o.type, String(o.count)]),
+    foot: [["TOTAL", String(stateTotals.totalOffences)]],
+    footStyles: { fillColor: [240, 241, 248], textColor: INK, fontStyle: "bold" },
+    columnStyles: { 1: { halign: "right", cellWidth: 40 } }
+  });
+  y = doc.lastAutoTable.finalY + 8;
+
+  const pendencyRows = list => [
+    ...list.best.map(r => [String(r.rank), r.unit, String(r.total), String(r.pending), r.percent !== undefined ? `${r.percent}%` : undefined].filter(v => v !== undefined)),
+    ...list.worst.map(r => [String(r.rank), r.unit, String(r.total), String(r.pending), r.percent !== undefined ? `${r.percent}%` : undefined].filter(v => v !== undefined))
+  ];
+  doc.autoTable({
+    ...tableTheme, startY: y,
+    head: [["#", "Applications Pending for Action — Unit", "Total Applications", "Pending"]],
+    body: pendencyRows(applicationsPendingAction),
+    columnStyles: { 0: { cellWidth: 14 }, 2: { halign: "right" }, 3: { halign: "right" } }
+  });
+  y = doc.lastAutoTable.finalY + 8;
+
+  doc.autoTable({
+    ...tableTheme, startY: y,
+    head: [["#", "Applications Pending for Site Visit — Unit", "Total", "Pending", "Pending %"]],
+    body: pendencyRows(applicationsPendingVisit),
+    columnStyles: { 0: { cellWidth: 14 }, 2: { halign: "right" }, 3: { halign: "right" }, 4: { halign: "right" } }
+  });
+
+  documentFooter(doc);
+  doc.save(`State-overview-${new Date().toISOString().slice(0, 10)}.pdf`);
+}
