@@ -4,6 +4,7 @@ import { loginView, bindLogin } from "./views/login.js";
 import { reportFormView, bindReportForm } from "./views/reportForm.js";
 import { dashboardView, bindDashboard } from "./views/dashboard.js";
 import { submissionsView, bindSubmissions } from "./views/submissions.js";
+import { stateOverviewView } from "./views/stateOverview.js";
 import { assistantView, bindAssistant } from "./views/assistant.js";
 import { getSession } from "./auth.js";
 
@@ -15,6 +16,7 @@ const routes = {
   "#/daily-dashboard": { view: () => dashboardView("daily") },
   "#/monthly-dashboard": { view: () => dashboardView("monthly") },
   "#/submissions": { view: submissionsView },
+  "#/state-overview": { view: stateOverviewView, adminOnly: true },
   "#/assistant": { view: assistantView },
   "#/contact": {
     public: true,
@@ -29,6 +31,7 @@ function resolveRoute() {
   if (!def.public && !session) return "#/login";
   if (route === "#/login" && session) return "#/home";
   if (def.stationOnly && session?.role === "admin") return "#/daily-dashboard";
+  if (def.adminOnly && session?.role !== "admin") return "#/home";
   return route;
 }
 

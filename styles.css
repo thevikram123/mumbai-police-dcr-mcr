@@ -268,3 +268,13 @@ th[data-sort][data-dir="desc"]::after { content: " ↓"; opacity: 1; }
   .worker-url-form { flex-direction: column; align-items: stretch; }
   .chat-msg { max-width: 95%; }
 }
+
+/* ---------- Bilingual labels & state overview ---------- */
+.mr-label { display: block; color: var(--muted); font-size: 12.5px; font-weight: 600; font-style: normal; line-height: 1.3; }
+.summary-card .small-stat { font-size: 20px; line-height: 1.2; }
+.donut-legend { display: grid; gap: 6px; margin-top: 14px; text-align: left; font-size: 13px; }
+.donut-legend i { display: inline-block; width: 11px; height: 11px; margin-right: 8px; border-radius: 50%; }
+.pendency-grid { grid-template-columns: 1fr 1fr; }
+.pendency-grid table { min-width: 0; }
+.rank-gap td { text-align: center; color: var(--muted); background: #fafafb; height: 34px; }
+@media (max-width: 900px) { .pendency-grid { grid-template-columns: 1fr; } }

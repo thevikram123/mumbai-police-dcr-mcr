@@ -2,6 +2,7 @@ import { getSession, isAdmin, sessionStation } from "../auth.js";
 import { hierarchy, dailyTrend } from "../data/reportData.js";
 import { getSubmissions, submissionsFor } from "../data/store.js";
 import { dashboardData } from "./dashboard.js";
+import { stateUnits, offenceTypes, applicationsPendingAction, applicationsPendingVisit, stateTotals } from "../data/stateData.js";
 import { ASSISTANT_WORKER_URL } from "../config.js";
 
 const history = [];
@@ -38,7 +39,16 @@ function contextData() {
       stations: monthly.rows.map(({ name, total, currentCs, lastCs, currentPending, lastPending, submitted, period }) => ({ station: name, totalFir: total, chargesheetsThisMonth: currentCs, chargesheetsAgainstLastMonth: lastCs, pendingThisMonth: currentPending, pendingLastMonth: lastPending, mcrSubmitted: Boolean(submitted), reportMonth: submitted ? period : undefined }))
     },
     cityWideDailyTrend: dailyTrend,
-    filedReports: (admin ? getSubmissions() : submissionsFor(station?.name)).slice(0, 50)
+    filedReports: (admin ? getSubmissions() : submissionsFor(station?.name)).slice(0, 50),
+    ...(admin ? {
+      stateOverview: {
+        totals: stateTotals,
+        unitWiseFir: stateUnits,
+        offenceTypeComposition: offenceTypes,
+        applicationsPendingForAction: applicationsPendingAction,
+        applicationsPendingForSiteVisit: applicationsPendingVisit
+      }
+    } : {})
   });
 }
 

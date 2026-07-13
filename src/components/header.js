@@ -5,7 +5,7 @@ export function header(activeRoute) {
   const session = getSession();
   const links = !session ? [["login", "Sign In"], ["contact", "Contact Us"]]
     : session.role === "admin"
-      ? [["home", "Home"], ["daily-dashboard", "Daily Dashboard"], ["monthly-dashboard", "Monthly Dashboard"], ["submissions", "Submission Register"], ["assistant", "Assistant"], ["contact", "Contact Us"]]
+      ? [["home", "Home"], ["daily-dashboard", "Daily Dashboard"], ["monthly-dashboard", "Monthly Dashboard"], ["state-overview", "State Overview"], ["submissions", "Submission Register"], ["assistant", "Assistant"]]
       : [["home", "Home"], ["dcr", "Create DCR"], ["mcr", "Create MCR"], ["daily-dashboard", "Daily Dashboard"], ["monthly-dashboard", "Monthly Dashboard"], ["submissions", "My Submissions"], ["assistant", "Assistant"]];
   const identity = !session ? "" : `
     <div class="identity-badge">

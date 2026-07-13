@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node dev-server.mjs",
-    "check": "node --check src/app.js && node --check src/auth.js && node --check src/data/store.js && node --check src/components/header.js && node --check src/components/formFields.js && node --check src/components/charts.js && node --check src/views/home.js && node --check src/views/login.js && node --check src/views/reportForm.js && node --check src/views/dashboard.js && node --check src/views/submissions.js && node --check src/views/assistant.js && node --check src/components/pdf.js && node --check src/config.js && node --check worker/gemini-proxy.js"
+    "check": "node --check src/app.js && node --check src/auth.js && node --check src/data/store.js && node --check src/components/header.js && node --check src/components/formFields.js && node --check src/components/charts.js && node --check src/views/home.js && node --check src/views/login.js && node --check src/views/reportForm.js && node --check src/views/dashboard.js && node --check src/views/submissions.js && node --check src/views/assistant.js && node --check src/data/stateData.js && node --check src/views/stateOverview.js && node --check src/components/pdf.js && node --check src/config.js && node --check worker/gemini-proxy.js"
   }
 }
 

@@ -15,6 +15,9 @@ DATA RULES
   portal dashboards for this user: "dailyDashboard" and "monthlyDashboard" contain exactly the rows and
   totals shown on their Daily and Monthly Cumulative Dashboards, scoped to their role. "filedReports" lists
   reports actually submitted through the portal, and "cityWideDailyTrend" is the 7-day FIR trend chart.
+  For HQ administrators, "stateOverview" matches the Maharashtra State Overview page: unit-wise FIR
+  registration across the state, offence-type composition, and applications pending for action and for
+  site visit (rankings cover only the five best and five worst units — say so if asked about others).
 - The "viewer" field tells you who is asking. A station officer's dataset covers only their own station;
   if they ask about another station, state that the information is outside their reporting scope and
   available to the HQ administrator.

@@ -21,6 +21,7 @@ const stationServices = station => {
 const adminServices = [
   { route: "daily-dashboard", icon: "assets/feedback.png", title: "Daily Dashboard (All Stations)", text: "City-wide FIR figures with per-station DCR submission status." },
   { route: "monthly-dashboard", icon: "assets/press-release.svg", title: "Monthly Dashboard (All Stations)", text: "Chargesheet conversion and pending workload across zones." },
+  { route: "state-overview", icon: "assets/dcp.png", title: "Maharashtra State Overview", text: "Unit-wise FIR registration, offence composition, and application pendency." },
   { route: "submissions", icon: "assets/report.svg", title: "Submission Register", text: "Every DCR and MCR filed, with references, timestamps, and PDF download." },
   { route: "assistant", icon: "assets/passport.svg", title: "Ask the Assistant", text: "Query city-wide figures in plain language — which stations lag, where pendency grows." },
   { route: "contact", icon: "assets/vehicles.svg", title: "Help & Contact", text: "Portal administration and support information." }

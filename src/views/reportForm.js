@@ -5,24 +5,28 @@ import { downloadSubmissionPdf } from "../components/pdf.js";
 
 const STEPS = ["Jurisdiction", "Report Figures", "Review & Submit"];
 
+// Labels follow the bilingual English (Marathi) convention of the official
+// N.C.R.B. I.I.F.-I First Information Report form.
 const metricDefs = type => {
   const base = [
-    { label: "No. of FIRs filed as on date", name: "total" },
-    { label: "No. of FIRs filed for body offences", name: "body" },
-    { label: "No. of FIRs filed for other than body offences", name: "other" }
+    { label: "No. of FIRs filed as on date", mr: "आज दिनांकापर्यंत दाखल एफ.आय.आर. संख्या", name: "total" },
+    { label: "No. of FIRs filed for body offences", mr: "शरीराविरुद्ध गुन्ह्यांचे एफ.आय.आर.", name: "body" },
+    { label: "No. of FIRs filed for other than body offences", mr: "इतर गुन्ह्यांचे एफ.आय.आर.", name: "other" }
   ];
   if (type !== "MCR") return base;
   return base.concat([
-    { label: "Chargesheets filed against FIRs filed this month", name: "currentCs" },
-    { label: "Chargesheets filed against FIRs filed last month", name: "lastCs" },
-    { label: "Chargesheets pending for this month", name: "currentPending" },
-    { label: "Chargesheets pending from last month", name: "lastPending" }
+    { label: "Chargesheets filed against FIRs filed this month", mr: "या महिन्यातील एफ.आय.आर. विरुद्ध दाखल दोषारोपपत्रे", name: "currentCs" },
+    { label: "Chargesheets filed against FIRs filed last month", mr: "मागील महिन्यातील एफ.आय.आर. विरुद्ध दाखल दोषारोपपत्रे", name: "lastCs" },
+    { label: "Chargesheets pending for this month", mr: "या महिन्याची प्रलंबित दोषारोपपत्रे", name: "currentPending" },
+    { label: "Chargesheets pending from last month", mr: "मागील महिन्याची प्रलंबित दोषारोपपत्रे", name: "lastPending" }
   ]);
 };
 
+const fieldLabel = (label, mr, required) => `<span>${label}${required ? " *" : ""}${mr ? `<em class="mr-label">${mr}</em>` : ""}</span>`;
+
 export function reportFormView(type) {
   return `<main id="app-content" class="page-content page-width report-view">
-    <div class="title-block"><h1>Create ${type}</h1><p>${type === "MCR" ? "Monthly" : "Daily"} Cumulative Report — Step-by-step filing</p><i></i></div>
+    <div class="title-block"><h1>Create ${type}</h1><p>${type === "MCR" ? "Monthly Cumulative Report (मासिक संचयी अहवाल)" : "Daily Cumulative Report (दैनिक संचयी अहवाल)"} — Step-by-step filing</p><i></i></div>
     <div data-wizard="${type}"></div>
   </main>`;
 }
@@ -43,8 +47,8 @@ export function bindReportForm() {
   const state = { step: 1, values: { ...defaults, ...saved } };
 
   const jurisdictionRows = [
-    ["State", hierarchy.state], ["Range", hierarchy.range], ["Unit", hierarchy.unit],
-    ["DCP Zone", station.zone], ["SDPO / ACP / DCP", station.division], ["Police Station", station.name]
+    ["State", "राज्य", hierarchy.state], ["Range", "परिक्षेत्र", hierarchy.range], ["Unit", "घटक", hierarchy.unit],
+    ["DCP Zone", "परिमंडळ", station.zone], ["SDPO / ACP / DCP", "उपविभागीय अधिकारी", station.division], ["Police Station", "पोलीस ठाणे", station.name]
   ];
 
   const stepper = () => `<ol class="wizard-stepper">${STEPS.map((label, i) => {
@@ -61,8 +65,8 @@ export function bindReportForm() {
 
   const stepOne = () => `<section class="form-panel">
     <div class="panel-heading"><h2>Step 1 — Reporting Jurisdiction</h2><span>Auto-filled from your station login</span></div>
-    <div class="form-grid">${jurisdictionRows.map(([label, value]) => `
-      <label class="form-field"><span>${label}</span><input value="${value}" readonly data-auto></label>`).join("")}
+    <div class="form-grid">${jurisdictionRows.map(([label, mr, value]) => `
+      <label class="form-field">${fieldLabel(label, mr)}<input value="${value}" readonly data-auto></label>`).join("")}
     </div>
     <div class="form-actions"><span class="wizard-note">Wrong station? Log out and sign in with the correct station account.</span>
       <button class="primary-button" type="button" data-next>Confirm &amp; Continue</button></div>
@@ -71,10 +75,10 @@ export function bindReportForm() {
   const stepTwo = () => `<form class="form-panel" data-step-form>
     <div class="panel-heading"><h2>Step 2 — ${isMcr ? "FIR & Chargesheet Figures" : "FIR Figures"}</h2><span>All fields are mandatory</span></div>
     <div class="form-grid metrics">
-      <label class="form-field"><span>${isMcr ? "Report Month" : "Report Date"} *</span>
+      <label class="form-field">${fieldLabel(isMcr ? "Report Month" : "Report Date", isMcr ? "अहवाल महिना" : "अहवाल दिनांक", true)}
         <input name="period" type="${isMcr ? "month" : "date"}" value="${state.values.period}" max="${isMcr ? today.slice(0, 7) : today}" required></label>
       ${metricDefs(type).map(f => `
-      <label class="form-field"><span>${f.label} *</span>
+      <label class="form-field">${fieldLabel(f.label, f.mr, true)}
         <input name="${f.name}" type="number" min="0" step="1" inputmode="numeric" value="${state.values[f.name]}" required></label>`).join("")}
     </div>
     <p class="validation-message ${mismatch() ? "error" : ""}" data-live-check role="status">${mismatch() ? `Body + other offences = ${mismatch().sum}, but total FIRs = ${mismatch().total}. Figures must tally.` : ""}</p>
@@ -88,7 +92,7 @@ export function bindReportForm() {
   const stepThree = () => `<section class="form-panel">
     <div class="panel-heading"><h2>Step 3 — Review &amp; Submit</h2><span>Verify every figure before submission</span></div>
     <div class="review-grid">
-      <div class="review-block"><h3>Jurisdiction</h3><dl>${jurisdictionRows.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join("")}</dl></div>
+      <div class="review-block"><h3>Jurisdiction</h3><dl>${jurisdictionRows.map(([label, , value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join("")}</dl></div>
       <div class="review-block"><h3>${isMcr ? "FIR & Chargesheet Figures" : "FIR Figures"}</h3><dl>
         <div><dt>${isMcr ? "Report Month" : "Report Date"}</dt><dd>${state.values.period}</dd></div>
         ${metricDefs(type).map(f => `<div><dt>${f.label}</dt><dd>${state.values[f.name]}</dd></div>`).join("")}
